@@ -87,16 +87,9 @@ class ChestXrayClientApp:
             self.drop_label.config(image=self.photo, text="")
 
             # --- API Preparation ---
-            img_converted = img.convert('RGB')
-            img_resized = img_converted.resize((224, 224))
-
-            buffer = io.BytesIO()
-            img_resized.save(buffer, format="JPEG")
-            buffer.seek(0)
-
-            files = {'file': (filename, buffer, 'image/jpeg')}
-
-            response = requests.post(self.api_url, files=files, timeout=10)
+            with open(filepath, 'rb') as f:
+                files = {'file': (filename, f, 'image/jpeg')}
+                response = requests.post(self.api_url, files=files, timeout=10)
 
             if response.status_code == 200:
                 data = response.json()
