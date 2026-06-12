@@ -27,7 +27,7 @@ def preprocess_image(image_bytes: bytes) -> np.ndarray:
     img = Image.open(io.BytesIO(image_bytes)).convert('RGB')
 
     # 1. Resize (224, 224)
-    img = img.resize((224, 224))
+    img = img.resize((224, 224), resample=Image.Resampling.BILINEAR)
 
     # 2. ToTensor (convert to float and scale 0-1)
     img_np = np.array(img).astype(np.float32) / 255.0
