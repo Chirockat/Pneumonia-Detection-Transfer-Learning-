@@ -175,6 +175,6 @@ if __name__ == '__main__':
         print(f"--> Summary | Train Loss: {train_loss:.4f} | Val Accuracy: {val_acc:.2f}%\n")
 
         # Zapisujemy same wagi do pliku z rozszerzeniem .pth (standard PyTorcha)
-        torch.save(model.state_dict(), 'model_wages_v2.pth')
-        print("Saved as: model_wages.pth")
+    torch.save(model.state_dict(), 'model_wages_v2.pth')
+    print("Saved as: model_wages.pth")
 
