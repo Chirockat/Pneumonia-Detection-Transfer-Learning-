@@ -2,7 +2,7 @@
 
 Technical documentation for a Deep Learning project utilizing Fine-Tuned EfficientNet-B0 and ONNX Runtime for automated classification of pneumonia types from chest X-ray images.
 
-![App Demo](assets/gui_example.gif)
+![App Demo](assets/presentation.gif)
 
 ---
 
@@ -113,6 +113,13 @@ To avoid overtraining, the training loop saved the `.pth` weights only when the 
 For production, the PyTorch model was exported to the **ONNX (Open Neural Network Exchange)** format. 
 * **Size Reduction:** Eliminated the 2GB+ PyTorch dependency.
 * **Speed:** Inference time dropped from ~80ms (PyTorch CPU) to **~7ms** (ONNX Runtime CPU).
+
+### Training settings
+Learning duration was set to **12 Epochs**
+
+Learning rate was chosen to be **lr = 0.001** in the 3 starting epochs, and later, after unfreezing the model, it was decreased to **lr = 0.0001**
+
+
 ## 6. Implementation and Tech Stack
 
 The project was developed in **Python 3.11**.
@@ -157,6 +164,10 @@ Directml is responsible for computing if you have strong AMD graphic card, but i
 
 ### Final Accuracy
 The model achieved a peak Validation Accuracy of **84.04%** at Epoch 10. Considering the small scale of the dataset and the lightweight nature of the base architecture, this proves highly robust generalization on unseen data, effectively avoiding the memorization (overfitting) trap.
+
+**Training Process**
+<img src="assets/Training1.PNG" width="500" alt="density_low">
+<img src="assets/Training2.PNG" width="500" alt="density_low">
 
 ### PyTorch vs ONNX Parity Benchmark
 Extensive testing confirmed zero precision loss during the ONNX conversion, with a massive increase in execution speed. The standalone client performs diagnostics in milliseconds.
