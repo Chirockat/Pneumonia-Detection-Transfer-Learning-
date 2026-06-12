@@ -167,6 +167,7 @@ The model achieved a peak Validation Accuracy of **84.04%** at Epoch 10. Conside
 
 **Training Process**
 <img src="assets/Training1.PNG" width="500" alt="density_low">
+
 <img src="assets/Training2.PNG" width="500" alt="density_low">
 
 ### PyTorch vs ONNX Parity Benchmark
