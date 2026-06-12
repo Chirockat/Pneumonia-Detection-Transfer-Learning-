@@ -14,17 +14,13 @@ from torchvision import transforms
 dataset_path = kagglehub.dataset_download("tolgadincer/labeled-chest-xray-images")
 print(dataset_path)
 
-data_transforms = transforms.Compose([
-    transforms.Resize((224, 224)),
-    transforms.ToTensor(),
-    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-])
 
 class ChestXrayDataset(torch.utils.data.Dataset):
     def __init__ (self, root_dir, transform=None):
-        self.image_paths = glob.glob(os.path.join(root_dir, '**/*.jpeg'), recursive=True)
-        self.class_to_idx = {'NORMAL': 0, 'BACTERIA': 1, 'VIRUS': 2}
+        raw_paths = glob.glob(os.path.join(root_dir, '**/*.jpeg'), recursive=True)
+        self.image_paths = sorted(raw_paths)
 
+        self.class_to_idx = {'NORMAL': 0, 'BACTERIA': 1, 'VIRUS': 2}
         self.transform = transform
 
     def __len__(self):
@@ -59,20 +55,41 @@ plt.show()
 # wyswietlenie obrazu, bo z 224, 224, 3
 # zmienilo sie na 3, 224, 224
 
+train_transforms = transforms.Compose([
+    transforms.Resize((224, 224)),
+    transforms.RandomRotation(10),
+    transforms.ColorJitter(brightness=0.1, contrast=0.1),
+    transforms.ToTensor(),
+    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+])
+
+val_transforms = transforms.Compose([
+    transforms.Resize((224, 224)),
+    transforms.ToTensor(),
+    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+])
+
+
 if __name__ == '__main__':
     ### Data Split and Data Loader ###
-    dataset = ChestXrayDataset(dataset_path, transform=data_transforms)
+    dataset_for_train = ChestXrayDataset(dataset_path, transform=train_transforms)
+    dataset_for_val = ChestXrayDataset(dataset_path, transform=val_transforms)
 
     torch.manual_seed(42)
 
-    train_size = int(0.8 * len(dataset))
-    val_size = len(dataset) - train_size
+    torch.manual_seed(42)
+    total_size = len(dataset_for_train)
+    train_size = int(0.8 * total_size)
+    val_size = total_size - train_size
 
-    train_dataset, val_dataset = torch.utils.data.random_split(dataset, [train_size, val_size])
+    indices = torch.randperm(total_size).tolist()
 
-    train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=32, shuffle=True)
-    val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=32, shuffle=False)
+    train_dataset = torch.utils.data.Subset(dataset_for_train, indices[:train_size])
+    val_dataset = torch.utils.data.Subset(dataset_for_val, indices[train_size:])
 
+    train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=32, shuffle=True, num_workers=2,
+                                               pin_memory=True)
+    val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=32, shuffle=False, num_workers=2, pin_memory=True)
     ### Model Effiecent-Net-B0, Fine-Tuning, Training 2 last Blocks ###
 
     # To jeszcze do zmiany weights
