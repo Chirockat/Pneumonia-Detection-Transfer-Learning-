@@ -166,6 +166,7 @@ Directml is responsible for computing if you have strong AMD graphic card, but i
 The model achieved a peak Validation Accuracy of **84.04%** at Epoch 10. Considering the small scale of the dataset and the lightweight nature of the base architecture, this proves highly robust generalization on unseen data, effectively avoiding the memorization (overfitting) trap.
 
 **Training Process**
+
 <img src="assets/Training1.PNG" width="500" alt="density_low">
 
 <img src="assets/Training2.PNG" width="500" alt="density_low">
