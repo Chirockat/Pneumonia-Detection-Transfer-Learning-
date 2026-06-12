@@ -10,9 +10,9 @@ from torchvision import transforms
 # 1. TEST CONFIGURATION
 # ==========================================
 image_paths = [
-    r"C:\Users\zeitu\.cache\kagglehub\datasets\tolgadincer\labeled-chest-xray-images\versions\1\chest_xray\test\NORMAL\NORMAL-3983280-0001.jpeg",
-    r"C:\Users\zeitu\.cache\kagglehub\datasets\tolgadincer\labeled-chest-xray-images\versions\1\chest_xray\test\PNEUMONIA\BACTERIA-840611-0001.jpeg",
-    r"C:\Users\zeitu\.cache\kagglehub\datasets\tolgadincer\labeled-chest-xray-images\versions\1\chest_xray\test\PNEUMONIA\VIRUS-1540910-0001.jpeg"
+    r"img\NORMAL-3983280-0001.jpeg",
+    r"img\BACTERIA-840611-0001.jpeg",
+    r"img\VIRUS-1540910-0001.jpeg"
 ]
 
 # Transforms must be 100% identical to your val_transforms
